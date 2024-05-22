@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoDonate</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(59, 59, 65, 0.19);
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .logo {
+
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #1d3557;
+               animation: bounce 2s infinite, fadeInLogo 2s forwards; /* Added a delay for the logo animation */
+        }
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 50px; /* Adjust the width as needed */
+    margin-right: 10px; /* Adjust the spacing between the logo and text */
+}
+
+.logo-text {
+    font-size: 1.5em; /* Adjust the font size as needed */
+}
+
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+               .form-container {
+            position: relative;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 450px;
+            width: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+            background-color: #ffc200;
+            box-shadow: 0 4px 8px rgb(0, 0, 0);
+            opacity: 0;
+            animation: slideIn 1s forwards;
+        }
+
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .form {
+                position: absolute;
+            width: 100%;
+            padding: 20px;
+            transition: transform 0.5s ease-in-out;
+
+        }
+
+            .hidden {
+            transform: translateX(100%);
+        }
+
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            justify-content: center;
+            align-items: center;
+            max-height: 145px; /* Adjust max-height as needed */
+            overflow-y: auto; /* Add scrollbar when content exceeds max-height */
+        }
+
+        .social-buttons button {
+            background-color: #ffffff;
+            color: #1d3557;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            padding: 10px;
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+  .social-buttons button img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        .social-buttons button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .form input {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: calc(100% - 20px);
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form button {
+            padding: 10px 20px;
+            background-color: #1d3557;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: calc(100% - 20px);
+            max-width: 300px;
+            margin: 10px auto;
+        }
+
+        .form button:hover {
+            background-color: #16304e;
+        }
+
+   .toggle-btn {
+            background: none;
+            border: none;
+            color: #1d3557;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .toggle-btn:hover {
+            color: #ffd700;
+        }
+
+        .sign-in-with {
+            color: #1d3557;
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+         <div class="logo">
+       <div class="logo-container">
+        <img src="img/ecodonlogo.png" alt="EcoDonate Logo" class="logo">
+        <div class="logo-text">EcoDon</div>
+       </div>
+    </div>
+        <div class="form-container">
+            <form id="signInForm" class="form">
+                <input type="text" placeholder="Username" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Sign In</button>
+               <div class="sign-in-with">Sign in with:</div>
+               <div class="social-buttons">
+                 <button type="button" onclick="signInWithGoogle()">
+                        <img src="img/chrome.png" alt="Google logo"> Google
+                    </button>
+                    <button type="button" onclick="signInWithFacebook()">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook logo"> Facebook
+                    </button>
+                     <button type="button" onclick="signInWithTwitter()">
+                        <img src="img/twitter.png" alt="Twitter logo"> Twitter
+                    </button>
+                </div>
+                <p>Don't have an account? <button type="button" class="toggle-btn" onclick="toggleForms()">Sign Up</button></p>
+            </form>
+            <form id="signUpForm" class="form hidden">
+                <input type="text" placeholder="Username" required>
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit">Sign Up</button>
+                <p>Already have an account? <button type="button" class="toggle-btn" onclick="toggleForms()">Sign In</button></p>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        // Display form after 3 seconds
+        setTimeout(function() {
+            document.querySelector('.form-container').style.display = 'block';
+        }, 3000);
+
+        function toggleForms() {
+            const signInForm = document.getElementById('signInForm');
+            const signUpForm = document.getElementById('signUpForm');
+            signInForm.classList.toggle('hidden');
+            signUpForm.classList.toggle('hidden');
+        }
+
+        function signInWithGoogle() {
+            // Simulate signing in with Google
+            alert('Sign in with Google');
+            window.location.href = 'setup-profile.html';
+        }
+
+        function signInWithFacebook() {
+            // Simulate signing in with Facebook
+            alert('Sign in with Facebook');
+            window.location.href = 'setup-profile.html';
+        }
+
+        function signInWithTwitter() {
+            // Simulate signing in with Twitter
+            alert('Sign in with Twitter');
+            window.location.href = 'setup-profile.html';
+        }
+
+        function signUpWithGoogle() {
+            // Simulate signing up with Google
+            alert('Sign up with Google');
+            window.location.href = 'setup-profile.html';
+        }
+
+        function signUpWithFacebook() {
+            // Simulate signing up with Facebook
+            alert('Sign up with Facebook');
+            window.location.href = 'setup-profile.html';
+        }
+
+        function signUpWithTwitter() {
+            // Simulate signing up with Twitter
+            alert('Sign up with Twitter');
+            window.location.href = 'setup-profile.html';
+        }
+    </script>
+</body>
+</html>

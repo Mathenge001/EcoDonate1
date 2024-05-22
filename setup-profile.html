@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Profile - EcoDonate</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1d3557; /* Navy blue background */
+            color: #ffffff; /* White text */
+        }
+
+        /* Container styles */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Heading styles */
+        h1 {
+            color: #ffd700; /* Gold heading */
+        }
+
+        /* Section styles */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        /* Form styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            height: 0;
+            transition: height 0.5s ease-in-out;
+        }
+
+        form.active {
+            height: auto;
+            margin-top: 20px;
+        }
+
+        label {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select {
+            padding: 10px;
+            margin: 10px 0;
+            width: 300px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        /* Gender selection styles */
+        .gender {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .gender label {
+            margin: 0 10px;
+            font-size: 1.2em;
+        }
+
+        .gender input[type="radio"] {
+            display: none;
+        }
+
+        .gender input[type="radio"] + label {
+            cursor: pointer;
+            font-size: 1.5em;
+        }
+
+        .gender input[type="radio"] + label:before {
+            content: '\2713';
+            color: transparent;
+            background-color: transparent;
+            border: 2px solid #ffd700; /* Gold border */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+        }
+
+        .gender input[type="radio"]:checked + label:before {
+            color: #ffd700; /* Gold checkmark */
+            background-color: #1d3557; /* Navy blue background */
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 10px 20px;
+            background-color: #ffd700; /* Gold button */
+            color: #1d3557; /* Navy blue text */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+        }
+
+        /* Button hover effect */
+        .btn:hover {
+            background-color: #16304e; /* Darker gold on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Setup Profile</h1>
+
+        <!-- Profile type selection -->
+        <div class="section">
+            <h2>Select Account Type</h2>
+            <form id="profileTypeForm">
+                <select id="profileType" name="profileType">
+                    <option value="individual">Individual</option>
+                    <option value="organization">Organization</option>
+                </select>
+                <button class="btn" type="button" onclick="nextStep()">Next</button>
+            </form>
+        </div>
+
+        <!-- Individual profile section -->
+        <div id="individualProfile" class="section hidden">
+            <h2>Individual Profile</h2>
+            <form>
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="phone1">Phone Number 1:</label>
+                <input type="tel" id="phone1" name="phone1" required>
+                <label for="phone2">Phone Number 2:</label>
+                <input type="tel" id="phone2" name="phone2">
+                <label for="phone3">Phone Number 3:</label>
+                <input type="tel" id="phone3" name="phone3">
+                <div class="gender">
+                    <label>Gender:</label>
+                    <input type="radio" id="male" name="gender" value="male">
+                    <label for="male">Male</label>
+                    <input type="radio" id="female" name="gender" value="female">
+                    <label for="female">Female</label>
+                </div>
+                <button class="btn" type="submit">Next</button>
+            </form>
+        </div>
+
+        <!-- Organization profile section -->
+        <div id="organizationProfile" class="section hidden">
+            <h2>Organization Profile</h2>
+            <form>
+                <label for="orgName">Organization Name:</label>
+                <input type="text" id="orgName" name="orgName" required>
+                <label for="orgEmail">Organization Email:</label>
+                <input type="email" id="orgEmail" name="orgEmail" required>
+                <label for="orgPhone">Organization Phone Number:</label>
+                <input type="tel" id="orgPhone" name="orgPhone" required>
+                <label for="orgLocation">Organization Location:</label>
+                <input type="text" id="orgLocation" name="orgLocation" required>
+                <button class="btn" type="submit">Next</button>
+            </form>
+        </div>
+
+        <!-- Date of birth selection -->
+        <div id="dobProfile" class="section hidden">
+            <h2>Date of Birth</h2>
+            <form>
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+                <button class="btn" type="submit">Next</button>
+            </form>
+        </div>
+
+        <!-- Profile picture selection -->
+        <div id="profilePicProfile" class="section hidden">
+            <h2>Profile Picture</h2>
+            <form>
+                <input type="file" id="profilePic" name="profilePic" accept="image/*" required>
+                <button class="btn" type="submit">Complete</button>
+            </form>
+                      </div>
+        </div>
+
+        <script>
+            let currentStep = 0; // Track the current step of the form
+
+            // Function to show the next step of the form
+            function nextStep() {
+                const sections = document.querySelectorAll('.section');
+                sections[currentStep].classList.remove('active');
+                currentStep++;
+                sections[currentStep].classList.add('active');
+            }
+
+            // Event listener to handle form submission
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', e => {
+                    e.preventDefault(); // Prevent form submission for demonstration
+                    nextStep(); // Move to the next step
+                });
+            });
+        </script>
+    </body>
+</html>
+
