@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup Profile - EcoDonate</title>
+    <title>Setup Profile - EcoDon</title>
     <style>
         body {
             margin: 0;
@@ -13,7 +13,6 @@
             color: #ffffff; /* White text */
         }
 
-        /* Container styles */
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -21,30 +20,28 @@
             text-align: center;
         }
 
-        /* Heading styles */
-        h1 {
+        h1, h2 {
             color: #ffd700; /* Gold heading */
         }
 
-        /* Section styles */
         .section {
-            margin-bottom: 40px;
+            display: none;
         }
 
-        /* Form styles */
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            height: 0;
-            transition: height 0.5s ease-in-out;
+        .section.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
         }
 
-        form.active {
-            height: auto;
-            margin-top: 20px;
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         label {
@@ -55,15 +52,32 @@
         input[type="text"],
         input[type="email"],
         input[type="tel"],
-        select {
+        input[type="date"],
+        select,
+        textarea {
             padding: 10px;
             margin: 10px 0;
             width: 300px;
             border-radius: 5px;
             border: none;
+            box-sizing: border-box;
         }
 
-        /* Gender selection styles */
+        .btn {
+            padding: 10px 20px;
+            background-color: #ffd700; /* Gold button */
+            color: #1d3557; /* Navy blue text */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #16304e; /* Darker gold on hover */
+        }
+
         .gender {
             display: flex;
             justify-content: center;
@@ -103,122 +117,335 @@
             background-color: #1d3557; /* Navy blue background */
         }
 
-        /* Button styles */
-        .btn {
-            padding: 10px 20px;
-            background-color: #ffd700; /* Gold button */
-            color: #1d3557; /* Navy blue text */
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: background-color 0.3s;
+        .profile-summary {
+            display: none;
         }
 
-        /* Button hover effect */
-        .btn:hover {
-            background-color: #16304e; /* Darker gold on hover */
+        .profile-summary.active {
+            display: block;
+            text-align: left;
         }
+
+        .profile-summary img {
+            max-width: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+ .back-button:hover {
+  background-color: #555;
+}
+
+
+
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Setup Profile</h1>
 
-        <!-- Profile type selection -->
-        <div class="section">
+      <div><h1><a href="index.html" class="back-button">Back</a>Setup Profile</h1></div>
+
+
+             <!-- Profile type selection -->
+        <div class="section active" id="profileTypeSection">
             <h2>Select Account Type</h2>
             <form id="profileTypeForm">
-                <select id="profileType" name="profileType">
+                <select id="profileType" name="profileType" onchange="showNextSection()">
+                    <option value="">Select Account Type</option>
                     <option value="individual">Individual</option>
                     <option value="organization">Organization</option>
                 </select>
-                <button class="btn" type="button" onclick="nextStep()">Next</button>
             </form>
         </div>
 
         <!-- Individual profile section -->
-        <div id="individualProfile" class="section hidden">
+        <div class="section" id="individualProfileSection">
             <h2>Individual Profile</h2>
-            <form>
-                <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" required>
-                <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" required>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <label for="phone1">Phone Number 1:</label>
-                <input type="tel" id="phone1" name="phone1" required>
-                <label for="phone2">Phone Number 2:</label>
-                <input type="tel" id="phone2" name="phone2">
-                <label for="phone3">Phone Number 3:</label>
-                <input type="tel" id="phone3" name="phone3">
-                <div class="gender">
-                    <label>Gender:</label>
-                    <input type="radio" id="male" name="gender" value="male">
-                    <label for="male">Male</label>
-                    <input type="radio" id="female" name="gender" value="female">
-                    <label for="female">Female</label>
+            <div id="individualSlider" class="slider">
+                <div class="slide">
+                    <form id="individualForm1">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                        <button class="btn" type="button" onclick="nextSlide('individualSlider')">Next</button>
+                    </form>
                 </div>
-                <button class="btn" type="submit">Next</button>
-            </form>
+                <div class="slide">
+                    <form id="individualForm2">
+                        <label for="phone1">Phone Number 1:</label>
+                        <input type="tel" id="phone1" name="phone1" required>
+                        <label for="phone2">Phone Number 2:</label>
+                        <input type="tel" id="phone2" name="phone2">
+                        <label for="phone3">Phone Number 3:</label>
+                        <input type="tel" id="phone3" name="phone3">
+                        <button class="btn" type="button" onclick="nextSlide('individualSlider')">Next</button>
+                    </form>
+                </div>
+                <div class="slide">
+                    <form id="individualForm3">
+                        <div class="gender">
+                            <label>Gender:</label>
+                            <input type="radio" id="male" name="gender" value="male">
+                            <label for="male">Male</label>
+                            <input type="radio" id="female" name="gender" value="female">
+                            <label for="female">Female</label>
+                        </div>
+                        <button class="btn" type="button" onclick="nextSlide('individualSlider')">Next</button>
+                    </form>
+                </div>
+                <div class="slide">
+                    <form id="individualForm4">
+                        <label for="dob">Date of Birth:</label>
+                        <input type="date" id="dob" name="dob" required>
+                        <button class="btn" type="button" onclick="nextSlide('individualSlider')">Next</button>
+                    </form>
+                </div>
+                <div class="slide">
+                    <form id="individualForm5">
+                        <label for="location">Location:</label>
+                        <input type="text" id="location" name="location" required>
+                        <button class="btn" type="button" onclick="nextSlide('individualSlider')">Next</button>
+                    </form>
+                </div>
+                <div class="slide">
+                    <form id="individualForm6">
+                        <label for="profilePhoto">Profile Photo:</label>
+                        <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" required>
+                        <button class="btn" type="button" onclick="nextSlide('individualSlider')">Next</button>
+                    </form>
+                </div>
+                <div class="slide">
+                    <form id="individualForm7">
+                        <label for="bio">Bio:</label>
+                        <textarea id="bio" name="bio" rows="4" required></textarea>
+                        <button class="btn" type="button" onclick="showProfileSummary('individual')">Complete</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <!-- Organization profile section -->
-        <div id="organizationProfile" class="section hidden">
-            <h2>Organization Profile</h2>
-            <form>
+<div class="section" id="organizationProfileSection">
+    <h2>Organization Profile</h2>
+    <div id="organizationSlider" class="slider">
+        <!-- Slide 1: Organization Type -->
+        <div class="slide">
+            <form id="organizationForm1">
+                <label for="orgType">Organization Type:</label>
+                <select id="orgType" name="orgType" required>
+                    <option value="">Select Organization Type</option>
+                    <option value="church">Church</option>
+                    <option value="ngo">NGO</option>
+                    <option value="business">Business</option>
+                    <option value="school">School</option>
+                    <option value="other">Other</option>
+                </select>
+                <button class="btn" type="button" onclick="nextSlide('organizationSlider')">Next</button>
+            </form>
+        </div>
+        <!-- Slide 2: Organization Name and Contact Info -->
+        <div class="slide">
+            <form id="organizationForm2">
                 <label for="orgName">Organization Name:</label>
                 <input type="text" id="orgName" name="orgName" required>
                 <label for="orgEmail">Organization Email:</label>
                 <input type="email" id="orgEmail" name="orgEmail" required>
                 <label for="orgPhone">Organization Phone Number:</label>
                 <input type="tel" id="orgPhone" name="orgPhone" required>
+                <button class="btn" type="button" onclick="nextSlide('organizationSlider')">Next</button>
+            </form>
+        </div>
+        <!-- Slide 3: Organization Location -->
+        <div class="slide">
+            <form id="organizationForm3">
                 <label for="orgLocation">Organization Location:</label>
                 <input type="text" id="orgLocation" name="orgLocation" required>
-                <button class="btn" type="submit">Next</button>
+                <button class="btn" type="button" onclick="nextSlide('organizationSlider')">Next</button>
             </form>
         </div>
-
-        <!-- Date of birth selection -->
-        <div id="dobProfile" class="section hidden">
-            <h2>Date of Birth</h2>
-            <form>
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob" required>
-                <button class="btn" type="submit">Next</button>
+        <!-- Slide 4: Organization Profile Picture -->
+        <div class="slide">
+            <form id="organizationForm4">
+                <label for="orgProfilePic">Profile Picture:</label>
+                <input type="file" id="orgProfilePic" name="orgProfilePic" accept="image/*" required>
+                <button class="btn" type="button" onclick="nextSlide('organizationSlider')">Next</button>
             </form>
         </div>
-
-        <!-- Profile picture selection -->
-        <div id="profilePicProfile" class="section hidden">
-            <h2>Profile Picture</h2>
-            <form>
-                <input type="file" id="profilePic" name="profilePic" accept="image/*" required>
-                <button class="btn" type="submit">Complete</button>
+        <!-- Slide 5: Organization Bio -->
+        <div class="slide">
+            <form id="organizationForm5">
+                <label for="orgBio">Organization Bio:</label>
+                <textarea id="orgBio" name="orgBio" rows="4" required></textarea>
+                <button class="btn" type="button" onclick="showProfileSummary('organization')">Complete</button>
             </form>
-                      </div>
         </div>
+    </div>
+</div>
 
-        <script>
-            let currentStep = 0; // Track the current step of the form
 
-            // Function to show the next step of the form
-            function nextStep() {
-                const sections = document.querySelectorAll('.section');
-                sections[currentStep].classList.remove('active');
-                currentStep++;
-                sections[currentStep].classList.add('active');
+<!-- Profile summary section -->
+<div class="profile-summary" id="profileSummary">
+    <h2>Profile Summary</h2>
+    <div id="profileSummaryContent"></div>
+    <button class="btn" onclick="editProfile()">Edit Profile</button>
+    <button class="btn" onclick="goToHomePage()">Finish Setup</button> <!-- Added button -->
+</div>
+    </div>
+
+
+   <script>
+    function showNextSection() {
+        const profileType = document.getElementById('profileType').value;
+        document.getElementById('profileTypeSection').classList.remove('active');
+
+        if (profileType === 'individual') {
+            document.getElementById('individualProfileSection').classList.add('active');
+        } else if (profileType === 'organization') {
+            document.getElementById('organizationProfileSection').classList.add('active');
+        }
+    }
+
+    function nextSlide(sliderId) {
+        const slides = document.querySelectorAll(`#${sliderId} .slide`);
+        for (let i = 0; i < slides.length; i++) {
+            if (slides[i].style.display === 'block' || slides[i].style.display === '') {
+                slides[i].style.display = 'none';
+                slides[(i + 1) % slides.length].style.display = 'block';
+                break;
+            }
+        }
+    }
+
+    function showProfileSummary(type) {
+        const summary = document.getElementById('profileSummary');
+        const summaryContent = document.getElementById('profileSummaryContent');
+        summaryContent.innerHTML = '';
+
+        let formData = {}; // Initialize an empty object to store form data
+
+        if (type === 'individual') {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const phone1 = document.getElementById('phone1').value;
+            const phone2 = document.getElementById('phone2').value;
+            const phone3 = document.getElementById('phone3').value;
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const dob = document.getElementById('dob').value;
+            const location = document.getElementById('location').value;
+            const profilePhoto = document.getElementById('profilePhoto').files[0];
+            const bio = document.getElementById('bio').value;
+
+            // Check if any field is empty
+            if (!firstName || !lastName || !phone1 || !gender || !dob || !location || !profilePhoto || !bio) {
+                alert("Please fill in all required fields.");
+                return;
             }
 
-            // Event listener to handle form submission
-            document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', e => {
-                    e.preventDefault(); // Prevent form submission for demonstration
-                    nextStep(); // Move to the next step
-                });
-            });
-        </script>
-    </body>
-</html>
+            // Save individual profile data to formData object
+            formData = {
+                type: 'individual',
+                firstName,
+                lastName,
+                phone1,
+                phone2,
+                phone3,
+                gender: gender.value,
+                dob,
+                location,
+                profilePhoto: URL.createObjectURL(profilePhoto),
+                bio
+            };
+        } else if (type === 'organization') {
+            const orgType = document.getElementById('orgType').value;
+            const orgName = document.getElementById('orgName').value;
+            const orgEmail = document.getElementById('orgEmail').value;
+            const orgPhone = document.getElementById('orgPhone').value;
+            const orgLocation = document.getElementById('orgLocation').value;
+            const orgProfilePhoto = document.getElementById('orgProfilePic').files[0];
+            const orgBio = document.getElementById('orgBio').value;
 
+            // Check if any field is empty
+            if (!orgType || !orgName || !orgEmail || !orgPhone || !orgLocation || !orgProfilePhoto || !orgBio) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            // Save organization profile data to formData object
+            formData = {
+                type: 'organization',
+                orgType,
+                orgName,
+                orgEmail,
+                orgPhone,
+                orgLocation,
+                orgProfilePhoto: URL.createObjectURL(orgProfilePhoto),
+                orgBio
+            };
+        }
+
+        // Store the form data in local storage
+        localStorage.setItem('formData', JSON.stringify(formData));
+
+        // Display profile summary
+        summaryContent.innerHTML = `
+            <img src="${formData.profilePhoto}" alt="Profile Photo">
+            <p><strong>Name:</strong> ${formData.firstName} ${formData.lastName}</p>
+            <p><strong>Phone Numbers:</strong> ${formData.phone1}${formData.phone2 ? ', ' + formData.phone2 : ''}${formData.phone3 ? ', ' + formData.phone3 : ''}</p>
+            <p><strong>Gender:</strong> ${formData.gender}</p>
+            <p><strong>Date of Birth:</strong> ${formData.dob}</p>
+            <p><strong>Location:</strong> ${formData.location}</p>
+            <p><strong>Bio:</strong> ${formData.bio || formData.orgBio}</p>
+        `;
+
+        summary.classList.add('active');
+    }
+
+    document.querySelectorAll('.slider').forEach(slider => {
+        slider.querySelectorAll('.slide').forEach((slide, index) => {
+            slide.style.display = index === 0 ? 'block' : 'none';
+        });
+    });
+
+    function editProfile() {
+        // Hide the profile summary section
+        document.getElementById('profileSummary').classList.remove('active');
+
+        // Show the profile type selection section
+        document.getElementById('profileTypeSection').classList.add('active');
+
+        // Reset all form fields
+        document.querySelectorAll('form').forEach(form => form.reset());
+
+        // Reset individual profile slider
+        document.getElementById('individualProfileSection').querySelectorAll('.slide').forEach((slide, index) => {
+            slide.style.display = index === 0 ? 'block' : 'none';
+        });
+
+        // Reset organization profile slider
+        document.getElementById('organizationProfileSection').querySelectorAll('.slide').forEach((slide, index) => {
+            slide.style.display = index === 0 ? 'block' : 'none';
+        });
+    }
+
+    function goToHomePage() {
+        // Navigate to the home-page.html
+        window.location.href = 'home-page.html';
+    }
+
+</script>
+
+</body>
+</html>

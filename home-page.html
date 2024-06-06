@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - EcoDon</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .header {
+            background-color: #1d3557;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .taskbar {
+            background-color: #ffd700;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            top: 60px;
+            width: 100%;
+            z-index: 999;
+        }
+
+        .taskbar button {
+            background-color: #1d3557;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .taskbar button:hover {
+            background-color: #16304e;
+        }
+
+        .content {
+            padding: 130px 20px 20px;
+        }
+
+        .category {
+            margin-bottom: 20px;
+        }
+
+        .category h2 {
+            background-color: #ffd700;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 0 0 10px;
+        }
+
+        .items {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .item {
+            min-width: 200px;
+            max-width: 200px;
+            background-color: #f9f9f9;
+            margin-right: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .item img {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .item p {
+            margin: 10px 0 0;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .modal input,
+        .modal select,
+        .modal textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .modal button {
+            padding: 10px 20px;
+            background-color: #1d3557;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .modal button:hover {
+            background-color: #16304e;
+        }
+
+        /* Item detail modal */
+        .item-detail-modal .modal-content {
+            margin: 10% auto;
+            padding: 20px;
+            max-width: 500px;
+        }
+
+        /* Cart styles */
+        .cart-button {
+            background-color: #1d3557;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .cart-button:hover {
+            background-color: #16304e;
+        }
+    </style>
+</head>
+<body>
+
+       <div class="header">
+        <h1>EcoDon</h1>
+        <div class="profile">
+            <img id="profileImage" src="profile-pic.jpg" alt="Profile Picture">
+            <span id="profileName">John Doe</span>
+        </div>
+    </div>
+
+
+    <div class="taskbar">
+        <button onclick="scrollToCategory('clothes')">Clothes</button>
+        <button onclick="scrollToCategory('food')">Food</button>
+        <button onclick="scrollToCategory('books')">Books/Stationary</button>
+        <button onclick="scrollToCategory('recyclables')">Recyclables</button>
+        <button onclick="scrollToCategory('personal')">Personal Effects</button>
+        <button onclick="scrollToCategory('agric')">Agric Waste</button>
+        <button onclick="openModal()">+</button>
+    </div>
+    <div class="content">
+        <div class="category" id="clothes">
+            <h2>Clothes</h2>
+            <div class="items">
+                <div class="item" onclick="showItemDetails(this)" data-category="clothes" data-name="T-shirt" data-description="A comfortable cotton t-shirt" data-amount="10" data-location="Naka, Nakuru" data-expiry="" data-expiry-image="">
+                    <img src="https://i.pinimg.com/564x/07/cb/3b/07cb3b8413acfa7a02dd68deea528a11.jpg" alt="T-shirt">
+                    <p><strong>T-shirt</strong></p>
+                    <p>10 pcs</p>
+                </div>
+            </div>
+        </div>
+        <div class="category" id="food">
+            <h2>Food</h2>
+            <div class="items">
+                <div class="item" onclick="showItemDetails(this)" data-category="food" data-name="Rice" data-description="Bag of rice, 5kg" data-amount="5" data-location="CBD, Nairobi" data-expiry="2023-12-31" data-expiry-image="expiry-date.jpg">
+                    <img src="https://i.pinimg.com/564x/93/16/ea/9316eaa14a83183b711cf79e2da79825.jpg" alt="Rice">
+                    <p><strong>Rice</strong></p>
+                    <p>5 pcs</p>
+                </div>
+            </div>
+        </div>
+        <div class="category" id="books">
+            <h2>Books/Stationary</h2>
+            <div class="items">
+                <div class="item" onclick="showItemDetails(this)" data-category="books" data-name="Notebook" data-description="Spiral-bound notebook" data-amount="20" data-location="westlands Naivas, Nairobi" data-expiry="" data-expiry-image="">
+                    <img src="https://i.pinimg.com/564x/aa/d3/c7/aad3c700dd6a1402ab40a8bc6c3cf258.jpg" alt="Notebook">
+                    <p><strong>Notebook</strong></p>
+                    <p>20 pcs</p>
+                </div>
+            </div>
+        </div>
+        <div class="category" id="recyclables">
+            <h2>Recyclables</h2>
+            <div class="items">
+                <div class="item" onclick="showItemDetails(this)" data-category="recyclables" data-name="Plastic Bottles" data-description="Used plastic bottles" data-amount="50" data-location="Githurai, Nairobi" data-expiry="" data-expiry-image="">
+                    <img src="https://i.pinimg.com/564x/8c/b3/a8/8cb3a80493a48ba406dc9f455d95edca.jpg" alt="Plastic Bottles">
+                    <p><strong>Plastic Bottles</strong></p>
+                    <p>50 pcs</p>
+                </div>
+            </div>
+        </div>
+        <div class="category" id="personal">
+            <h2>Personal Effects</h2>
+            <div class="items">
+                <div class="item" onclick="showItemDetails(this)" data-category="personal" data-name="Watch" data-description="Analog wristwatch" data-amount="1" data-location="kahawa wendani, Nairobi" data-expiry="" data-expiry-image="">
+                    <img src="https://i.pinimg.com/564x/a8/6b/17/a86b17cd64cf9d3e2201565f5e590e66.jpg" alt="Watch">
+                    <p><strong>Watch</strong></p>
+                    <p>1 pc</p>
+                </div>
+            </div>
+        </div>
+        <div class="category" id="agric">
+            <h2>Agric Waste</h2>
+            <div class="items">
+                <div class="item" onclick="showItemDetails(this)" data-category="agric" data-name="Compost" data-description="Organic compost" data-amount="100kg" data-location="Ruiru, Kiambu" data-expiry="" data-expiry-image="">
+                    <img src="https://i.pinimg.com/564x/7e/4a/59/7e4a59d9d3481fde0c0f008f0e099099.jpg" alt="Compost">
+                    <p><strong>Compost</strong></p>
+                    <p>100 kg</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="addItemModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Add New Item</h2>
+            <form id="addItemForm">
+                <label for="itemCategory">Category:</label>
+                <select id="itemCategory" name="itemCategory" required>
+                    <option value="clothes">Clothes</option>
+                    <option value="food">Food</option>
+                    <option value="books">Books/Stationary</option>
+                    <option value="recyclables">Recyclables</option>
+                    <option value="personal">Personal Effects</option>
+                    <option value="agric">Agric Waste</option>
+                </select>
+                <label for="itemImage">Image:</label>
+                <input type="file" id="itemImage" name="itemImage" accept="image/*" required>
+                <label for="itemName">Name:</label>
+                <input type="text" id="itemName" name="itemName" required>
+                <label for="itemAmount">Amount:</label>
+                <input type="number" id="itemAmount" name="itemAmount" required>
+                <label for="itemRecipient">Recipient:</label>
+                <select id="itemRecipient" name="itemRecipient" required>
+                    <option value="organization">Organization</option>
+                    <option value="individual">Individual</option>
+                    <option value="upForGrabs">Up for Grabs</option>
+                </select>
+                <label for="recipientName">Recipient Name:</label>
+                <input type="text" id="recipientName" name="recipientName">
+                <label for="itemType">Type:</label>
+                <select id="itemType" name="itemType" required>
+                    <option value="donate">Donate</option>
+                    <option value="sell">Sell</option>
+                </select>
+                <label for="itemDescription">Description:</label>
+                <textarea id="itemDescription" name="itemDescription" rows="4" required></textarea>
+                <label for="itemLocation">Location:</label>
+                <input type="text" id="itemLocation" name="itemLocation" required>
+                <label for="itemExpiry">Expiry Date:</label>
+                <input type="date" id="itemExpiry" name="itemExpiry">
+                <label for="expiryImage">Expiry Date Image:</label>
+                <input type="file" id="expiryImage" name="expiryImage" accept="image/*">
+                <button type="submit">Add Item</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Item Detail Modal -->
+    <div id="itemDetailModal" class="modal item-detail-modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeItemDetailModal()">&times;</span>
+            <div id="itemDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- Cart -->
+    <button class="cart-button" onclick="openCart()">Check Cart</button>
+
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cartItems"></div>
+            <button onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+
+    <script>
+let cart = [];
+
+function scrollToCategory(categoryId) {
+    document.getElementById(categoryId).scrollIntoView({ behavior: 'smooth' });
+}
+
+function openModal() {
+    document.getElementById('addItemModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('addItemModal').style.display = 'none';
+}
+
+function showItemDetails(element) {
+    const itemDetailContent = document.getElementById('itemDetailContent');
+    const item = {
+        category: element.getAttribute('data-category'),
+        name: element.getAttribute('data-name'),
+        description: element.getAttribute('data-description'),
+        amount: element.getAttribute('data-amount'),
+        location: element.getAttribute('data-location'),
+        expiry: element.getAttribute('data-expiry'),
+        expiryImage: element.getAttribute('data-expiry-image'),
+        imageSrc: element.querySelector('img').src
+    };
+    itemDetailContent.innerHTML = `
+        <img src="${item.imageSrc}" alt="${item.name}" style="width:100%; border-radius: 10px;">
+        <h3>${item.name}</h3>
+        <p><strong>Description:</strong> ${item.description}</p>
+        <p><strong>Amount:</strong> ${item.amount}</p>
+        <p><strong>Location:</strong> ${item.location}</p>
+        ${item.expiry ? `<p><strong>Expiry Date:</strong> ${item.expiry}</p>` : ''}
+        ${item.expiryImage ? `<img src="${item.expiryImage}" alt="Expiry Date" style="width: 100%; border-radius: 10px;">` : ''}
+        <button onclick="addToCart('${item.name}', '${item.category}', '${item.imageSrc}')">Get/Buy</button>
+    `;
+    document.getElementById('itemDetailModal').style.display = 'block';
+}
+
+function closeItemDetailModal() {
+    document.getElementById('itemDetailModal').style.display = 'none';
+}
+
+function addToCart(name, category, imageSrc) {
+    cart.push({ name, category, imageSrc });
+    alert(`${name} added to cart.`);
+    closeItemDetailModal();
+}
+
+function openCart() {
+    const cartItemsContainer = document.getElementById('cartItems');
+    cartItemsContainer.innerHTML = '';
+    cart.forEach(item => {
+        const cartItemElement = document.createElement('div');
+        cartItemElement.innerHTML = `
+            <p><strong>${item.name}</strong></p>
+            <img src="${item.imageSrc}" alt="${item.name}" style="width: 50px; height: 50px; border-radius: 5px;">
+        `;
+        cartItemsContainer.appendChild(cartItemElement);
+    });
+    document.getElementById('cartModal').style.display = 'block';
+}
+
+function closeCart() {
+    document.getElementById('cartModal').style.display = 'none';
+}
+
+function checkout() {
+    alert('Proceeding to checkout...');
+    // Implement checkout logic
+    cart = [];
+    closeCart();
+}
+
+function addItemToCategory(item) {
+    const categoryElement = document.getElementById(item.category).querySelector('.items');
+    const newItemElement = document.createElement('div');
+    newItemElement.className = 'item';
+    newItemElement.onclick = () => showItemDetails(newItemElement);
+    newItemElement.setAttribute('data-category', item.category);
+    newItemElement.setAttribute('data-name', item.name);
+    newItemElement.setAttribute('data-description', item.description);
+    newItemElement.setAttribute('data-amount', item.amount);
+    newItemElement.setAttribute('data-location', item.location);
+    newItemElement.setAttribute('data-expiry', item.expiry);
+    newItemElement.setAttribute('data-expiry-image', item.expiryImage);
+    newItemElement.innerHTML = `
+        <img src="${URL.createObjectURL(item.image)}" alt="${item.name}">
+        <p><strong>${item.name}</strong></p>
+        <p>${item.amount}</p>
+    `;
+    categoryElement.appendChild(newItemElement);
+}
+
+document.getElementById('addItemForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const newItem = {
+        category: formData.get('itemCategory'),
+        image: formData.get('itemImage'),
+        name: formData.get('itemName'),
+        amount: formData.get('itemAmount'),
+        recipient: formData.get('itemRecipient'),
+        recipientName: formData.get('recipientName'),
+        type: formData.get('itemType'),
+        description: formData.get('itemDescription'),
+        location: formData.get('itemLocation'),
+        expiry: formData.get('itemExpiry'),
+        expiryImage: formData.get('expiryImage')
+    };
+    addItemToCategory(newItem);
+    closeModal();
+    event.target.reset();
+});
+
+window.onclick = function(event) {
+    const addItemModal = document.getElementById('addItemModal');
+    const itemDetailModal = document.getElementById('itemDetailModal');
+    const cartModal = document.getElementById('cartModal');
+    if (event.target === addItemModal) {
+        closeModal();
+    } else if (event.target === itemDetailModal) {
+        closeItemDetailModal();
+    } else if (event.target === cartModal) {
+        closeCart();
+    }
+};
+
+// Function to retrieve name and profile photo
+function getProfileInfo() {
+    // You can replace these lines with your actual logic to fetch profile data from your server or local storage
+    const profileName = "John Doe";
+    const profileImageSrc = "profile-pic.jpg";
+
+    return { name: profileName, imageSrc: profileImageSrc };
+}
+
+// Function to retrieve profile information from local storage
+function getProfileInfo() {
+    // Retrieve profile information from local storage if available
+    let profileName = localStorage.getItem('profileName');
+    let profileImageSrc = localStorage.getItem('profileImageSrc');
+
+    // If profile information is not available in local storage, use default values
+    if (!profileName || !profileImageSrc) {
+        profileName = "John Doe";
+        profileImageSrc = "profile-pic.jpg";
+    }
+
+    return { name: profileName, imageSrc: profileImageSrc };
+}
+
+
+//  update profile info
+function updateProfile() {
+    const profileInfo = getProfileInfo();
+    document.getElementById('profileName').textContent = profileInfo.name;
+    document.getElementById('profileImage').src = profileInfo.imageSrc;
+}
+
+// Function to retrieve profile information from local storage
+function getProfileInfo() {
+    // Retrieve profile information from local storage if available
+    let profileName = localStorage.getItem('profileName');
+    let profileImageSrc = localStorage.getItem('profileImageSrc');
+
+    // If profile information is not available in local storage, use default values
+    if (!profileName || !profileImageSrc) {
+        profileName = "John Doe"; // Default profile name
+        profileImageSrc = "profile-pic.jpg"; // Default profile image source
+    }
+
+    return { name: profileName, imageSrc: profileImageSrc };
+}
+
+
+// to view profile picture
+function viewProfilePicture() {
+    // Open modal to view profile picture
+    const profileInfo = getProfileInfo();
+    const modalContent = document.createElement('div');
+    modalContent.innerHTML = `
+        <img src="${profileInfo.imageSrc}" alt="${profileInfo.name}'s Profile Picture" style="width: 100%;">
+    `;
+    showModal('View Profile Picture', modalContent);
+}
+
+//  to edit profile
+function editProfile() {
+    // Open modal to edit profile
+    const profileInfo = getProfileInfo();
+    const modalContent = document.createElement('div');
+    modalContent.innerHTML = `
+        <label for="newProfileName">Name:</label>
+        <input type="text" id="newProfileName" value="${profileInfo.name}" required>
+        <label for="newProfileImage">Profile Picture:</label>
+        <input type="file" id="newProfileImage" accept="image/*" required>
+        <button onclick="saveProfileChanges()">Save Changes</button>
+    `;
+    showModal('Edit Profile', modalContent);
+}
+
+// to save profile changes
+function saveProfileChanges() {
+    const newName = document.getElementById('newProfileName').value;
+    const newImage = document.getElementById('newProfileImage').files[0];
+
+    // Save new profile information to local storage
+    localStorage.setItem('profileName', newName);
+    localStorage.setItem('profileImageSrc', URL.createObjectURL(newImage));
+
+    // Update profile info
+    updateProfile();
+
+    // Close modal
+    closeModal();
+}
+
+//  to show modal
+function showModal(title, content) {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'block';
+    modal.querySelector('.modal-title').textContent = title;
+    modal.querySelector('.modal-content').innerHTML = '';
+    modal.querySelector('.modal-content').appendChild(content);
+}
+
+window.onload = function() {
+    updateProfile();
+};
+
+    </script>
+</body>
+</html>
