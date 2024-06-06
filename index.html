@@ -21,6 +21,8 @@
             text-align: center;
             opacity: 0;
             animation: fadeIn 2s forwards;
+            width: 90%;
+            max-width: 400px;
         }
 
         @keyframes fadeIn {
@@ -30,29 +32,26 @@
         }
 
         .logo {
-
-            font-size: 3em;
+            font-size: 2.5em;
             margin-bottom: 20px;
             color: #1d3557;
-               animation: bounce 2s infinite, fadeInLogo 2s forwards; /* Added a delay for the logo animation */
+            animation: bounce 2s infinite, fadeInLogo 2s forwards;
         }
 
-.logo-container {
-    display: flex;
-    align-items: center;
-}
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.logo {
-    width: 50px; /* Adjust the width as needed */
-    margin-right: 10px; /* Adjust the spacing between the logo and text */
-  align-items: center;
-}
+        .logo img {
+            width: 50px;
+            margin-right: 10px;
+        }
 
-.logo-text {
-    font-size: 1.5em; /* Adjust the font size as needed */
-  align-items: center;
-}
-
+        .logo-text {
+            font-size: 1.5em;
+        }
 
         @keyframes bounce {
             0%, 100% {
@@ -63,22 +62,21 @@
             }
         }
 
-               .form-container {
-            position: relative;
+        .form-container {
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 450px;
-            width: 400px;
-            overflow: hidden;
-            border-radius: 10px;
             background-color: #ffc200;
             box-shadow: 0 4px 8px rgb(0, 0, 0);
             opacity: 0;
             animation: slideIn 1s forwards;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
         }
-
 
         @keyframes slideIn {
             from {
@@ -92,14 +90,11 @@
         }
 
         .form {
-                position: absolute;
             width: 100%;
-            padding: 20px;
             transition: transform 0.5s ease-in-out;
-
         }
 
-            .hidden {
+        .hidden {
             transform: translateX(100%);
         }
 
@@ -109,8 +104,8 @@
             margin-top: 20px;
             justify-content: center;
             align-items: center;
-            max-height: 145px; /* Adjust max-height as needed */
-            overflow-y: auto; /* Add scrollbar when content exceeds max-height */
+            max-height: 145px;
+            overflow-y: auto;
         }
 
         .social-buttons button {
@@ -121,14 +116,15 @@
             cursor: pointer;
             margin: 5px;
             padding: 10px;
-            width: 120px;
+            width: 100%;
+            max-width: 300px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background-color 0.3s;
         }
 
-  .social-buttons button img {
+        .social-buttons button img {
             width: 20px;
             height: 20px;
             margin-right: 10px;
@@ -142,7 +138,7 @@
             display: block;
             margin: 10px auto;
             padding: 10px;
-            width: calc(100% - 20px);
+            width: 100%;
             max-width: 300px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -155,7 +151,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: calc(100% - 20px);
+            width: 100%;
             max-width: 300px;
             margin: 10px auto;
         }
@@ -164,7 +160,7 @@
             background-color: #16304e;
         }
 
-   .toggle-btn {
+        .toggle-btn {
             background: none;
             border: none;
             color: #1d3557;
@@ -181,30 +177,39 @@
             margin-bottom: 5px;
         }
 
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 2em;
+            }
+
+            .logo-text {
+                font-size: 1.2em;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-         <div class="logo">
-       <div class="logo-container">
-        <img src="img/ecodonlogo.png" alt="EcoDonate Logo" class="logo">
-        <div class="logo-text">EcoDon</div>
-       </div>
-    </div>
+        <div class="logo">
+            <div class="logo-container">
+                <img src="img/ecodonlogo.png" alt="EcoDonate Logo" class="logo">
+                <div class="logo-text">EcoDon</div>
+            </div>
+        </div>
         <div class="form-container">
             <form id="signInForm" class="form">
                 <input type="text" placeholder="Username" required>
                 <input type="password" placeholder="Password" required>
                 <button type="submit">Sign In</button>
-               <div class="sign-in-with">Sign in with:</div>
-               <div class="social-buttons">
-                 <button type="button" onclick="signInWithGoogle()">
+                <div class="sign-in-with">Sign in with:</div>
+                <div class="social-buttons">
+                    <button type="button" onclick="signInWithGoogle()">
                         <img src="img/chrome.png" alt="Google logo"> Google
                     </button>
                     <button type="button" onclick="signInWithFacebook()">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook logo"> Facebook
                     </button>
-                     <button type="button" onclick="signInWithTwitter()">
+                    <button type="button" onclick="signInWithTwitter()">
                         <img src="img/twitter.png" alt="Twitter logo"> Twitter
                     </button>
                 </div>
@@ -220,11 +225,10 @@
         </div>
     </div>
 
-
     <script>
         // Display form after 3 seconds
         setTimeout(function() {
-            document.querySelector('.form-container').style.display = 'block';
+            document.querySelector('.form-container').style.display = 'flex';
         }, 3000);
 
         function toggleForms() {
