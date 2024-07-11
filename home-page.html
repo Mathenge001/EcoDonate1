@@ -13,22 +13,7 @@
             color: #333;
         }
 
-        .header {
-            background-color: #1d3557;
-            color: #fff;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
 
-        .header h1 {
-            margin: 0;
-        }
 
         .profile {
             display: flex;
@@ -42,30 +27,128 @@
             margin-right: 10px;
         }
 
-        .taskbar {
-            background-color: #ffd700;
-            padding: 10px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            position: fixed;
-            top: 60px;
-            width: 100%;
-            z-index: 999;
-        }
-
-        .taskbar button {
+  .header {
             background-color: #1d3557;
             color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            cursor: pointer;
+            padding: 5px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
         }
 
-        .taskbar button:hover {
-            background-color: #16304e;
+        .header h1 {
+            margin: 0;
         }
+
+
+/* Adjusted styles for the second navbar */
+.second-navbar {
+    background-color: #1d3557;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+   justify-content: center; /* Center items horizontally */
+        align-items: center; /* Center items vertically */
+    position: fixed;
+    top: 60px; /* Adjusted position */
+    width: 100%;
+    z-index: 998; /* Lower than the first taskbar */
+}
+
+.second-navbar button {
+    background-color: #1d3557;
+    color: #fff;
+    border: none;
+    padding:5px -85px;
+    cursor: pointer;
+  margin: -175px;
+}
+
+.second-navbar button:hover {
+    background-color: #16304e;
+}
+
+@media screen and (max-width: 768px) {
+    /* Adjust styles for smaller screens */
+    .second-navbar {
+        flex-wrap: wrap;
+        padding: 5px; /* Adjust padding */
+        justify-content: center; /* Center align buttons */
+        top: 50px; /* Adjusted top position */
+    }
+
+    .second-navbar button {
+        padding: 5px 6px; /* Adjust button padding */
+        margin: -175px; /* Adjust button margins */
+        width: auto; /* Allow buttons to adjust width as needed */
+    }
+
+    .second-navbar .profile {
+        display: none; /* Hide profile on smaller screens if needed */
+    }
+}
+
+/* Header styles */
+.header {
+    background-color: #1d3557;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Taskbar styles */
+.taskbar {
+    background-color: #ffd700;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    top: 60px;
+    width: 100%;
+    z-index: 999;
+}
+
+.taskbar button {
+    background-color: #1d3557;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.taskbar button:hover {
+    background-color: #16304e;
+}
+
+
 
         .content {
             padding: 130px 20px 20px;
@@ -199,20 +282,32 @@
             z-index: 1000;
         }
 
+
+
         .cart-button:hover {
             background-color: #16304e;
         }
-    </style>
+  </style>
 </head>
 <body>
 
-       <div class="header">
+  <!-- Second Navbar -->
+<div class="second-navbar">
+    <div class="header">
         <h1>EcoDon</h1>
-        <div class="profile">
-            <img id="profileImage" src="profile-pic.jpg" alt="Profile Picture">
-            <span id="profileName">John Doe</span>
-        </div>
+
+
+    <button onclick="openModal()">+</button>
+    <button onclick="scrollToSection('products')">Products</button>
+    <button onclick="scrollToSection('chats')">Chats</button>
+    <button onclick="scrollToSection('newsfeed')">Newsfeed</button>
+    <button onclick="scrollToSection('statistics')">Statistics</button>
+    <div class="profile">
+        <img id="profileImage" src="profile-pic.jpg" alt="Profile Picture">
+        <span id="profileName">John Doe</span>
     </div>
+</div>
+</div>
 
 
     <div class="taskbar">
@@ -222,7 +317,6 @@
         <button onclick="scrollToCategory('recyclables')">Recyclables</button>
         <button onclick="scrollToCategory('personal')">Personal Effects</button>
         <button onclick="scrollToCategory('agric')">Agric Waste</button>
-        <button onclick="openModal()">+</button>
     </div>
     <div class="content">
         <div class="category" id="clothes">
